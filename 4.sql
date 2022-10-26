@@ -89,16 +89,22 @@ SELECT name FROM joined WHERE rank IN (
 -- same but ranks different or marks different but ranks same together with the status (whether they
 -- belong to the first category or second category)
 
+SELECT a.*, 
+CASE WHEN a.rank = b.rank then 'Same Rank'
+ELSE 'Same Marks'
+end as Comments
+FROM (SELECT * FROM student NATURAL JOIN student_rank) a JOIN (SELECT * FROM student NATURAL JOIN student_rank) b
+WHERE (a.rank = b.rank && a.mark != b.mark && a.roll_no < b.roll_no) || (a.rank != b.rank && a.mark = b.mark && a.roll_no < b.roll_no);
 
--- Question d
--- Find the category with the highest academic performance and the one with the least academic performance.
+-- question d
+-- find the category with the highest academic performance and the one with the least academic performance.
 
-SELECT category FROM joined GROUP BY category ORDER BY AVG(mark) LIMIT 1;
-SELECT category FROM joined GROUP BY category ORDER BY AVG(mark) DESC LIMIT 1;
+select category from joined group by category order by avg(mark) limit 1;
+select category from joined group by category order by avg(mark) desc limit 1;
 
 
--- Question e
--- Find the category whose academic performance is below the average academic performance.
+-- question e
+-- find the category whose academic performance is below the average academic performance.
 
 SELECT category FROM joined GROUP BY category
 HAVING AVG(mark) <= (SELECT AVG(mark) FROM joined);
