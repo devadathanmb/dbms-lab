@@ -90,11 +90,11 @@ SELECT name FROM joined WHERE rank IN (
 -- belong to the first category or second category)
 
 SELECT a.*, 
-CASE WHEN a.rank = b.rank then 'Same Rank'
+CASE WHEN a.rank = b.rank THEN 'Same Rank'
 ELSE 'Same Marks'
-end as Comments
+END AS comments
 FROM (SELECT * FROM student NATURAL JOIN student_rank) a JOIN (SELECT * FROM student NATURAL JOIN student_rank) b
-WHERE (a.rank = b.rank && a.mark != b.mark && a.roll_no < b.roll_no) || (a.rank != b.rank && a.mark = b.mark && a.roll_no < b.roll_no);
+WHERE (a.rank = b.rank && a.mark != b.mark && a.roll_no != b.roll_no) || (a.rank != b.rank && a.mark = b.mark && a.roll_no != b.roll_no);
 
 -- question d
 -- find the category with the highest academic performance and the one with the least academic performance.
